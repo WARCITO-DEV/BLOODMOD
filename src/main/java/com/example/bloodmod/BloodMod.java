@@ -15,7 +15,7 @@ public class BloodMod {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
 
     public static final DeferredItem<Item> ARMA_SANGRE = ITEMS.registerItem(
-            "arma_sangre", SangreItem::new, new Item.Properties().stacksTo(1).fireResistant());
+            "arma_sangre", SangreItem::new, props -> props.stacksTo(1).fireResistant());
 
     public BloodMod(IEventBus modEventBus) {
         ITEMS.register(modEventBus);

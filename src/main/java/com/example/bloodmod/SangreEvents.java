@@ -1,5 +1,9 @@
 package com.example.bloodmod;
 
+import java.util.Collections;
+import java.util.Map;
+import java.util.WeakHashMap;
+
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -22,18 +26,16 @@ import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 @EventBusSubscriber(modid = "bloodmod")
 public class SangreEvents {
 
+    /** Carga (0-100) de cada flecha de sangre disparada. Se limpia sola cuando la flecha desaparece. */
+    public static final Map<Entity, Integer> CARGAS = Collections.synchronizedMap(new WeakHashMap<>());
+
     @SubscribeEvent
     public static void alImpactar(ProjectileImpactEvent event) {
         if (!(event.getProjectile() instanceof AbstractArrow flecha)) return;
         if (!(flecha.level() instanceof ServerLevel sl)) return;
 
-        int porcentaje = -1;
-        for (String tag : flecha.getTags()) {
-            if (tag.startsWith(SangreItem.TAG_AOE)) {
-                porcentaje = Integer.parseInt(tag.substring(SangreItem.TAG_AOE.length()));
-            }
-        }
-        if (porcentaje < 0) return; // no es una flecha de sangre
+        Integer porcentaje = CARGAS.remove(flecha);
+        if (porcentaje == null) return; // no es una flecha de sangre
 
         event.setCanceled(true); // el daño lo hace el área, no el impacto directo
 

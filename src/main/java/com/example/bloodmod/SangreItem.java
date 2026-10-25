@@ -56,7 +56,6 @@ public class SangreItem extends Item {
     static final int MIN_CARGA = 8;              // carga mínima para disparar
     static final int INTERVALO_DRENAJE = 10;     // cada cuántos ticks cargando pierdes 1 HP
     // => carga completa = 6 HP (3 corazones) de coste
-    public static final String TAG_AOE = "sangre_aoe_";
 
     public SangreItem(Properties props) {
         super(props);
@@ -135,7 +134,6 @@ public class SangreItem extends Item {
                 applyMode(stack, (getMode(stack) + 1) % TOTAL_MODOS);
                 level.playSound(null, player.blockPosition(), SoundEvents.ENDERMAN_TELEPORT,
                         SoundSource.PLAYERS, 0.8f, 0.6f);
-                player.displayClientMessage(stack.getHoverName(), true);
             }
             return InteractionResult.SUCCESS;
         }
@@ -192,7 +190,7 @@ public class SangreItem extends Item {
                     0f, 2.5f + carga, 1.0f);
             flecha.setBaseDamage(0.0); // el daño real es el de área (SangreEvents)
             flecha.pickup = AbstractArrow.Pickup.DISALLOWED;
-            flecha.addTag(TAG_AOE + Math.round(carga * 100));
+            SangreEvents.CARGAS.put(flecha, Math.round(carga * 100));
             sl.addFreshEntity(flecha);
         }
         sl.playSound(null, player.blockPosition(), SoundEvents.ARROW_SHOOT,
