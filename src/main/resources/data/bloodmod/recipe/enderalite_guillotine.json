@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "E": "minecraft:emerald_block",
+    "S": "minecraft:wither_skeleton_skull",
+    "G": "minecraft:gold_block",
+    "L": "minecraft:birch_log"
+  },
+  "pattern": [
+    "EE ",
+    "ESG",
+    " L "
+  ],
+  "result": {
+    "id": "bloodmod:enderalite_guillotine",
+    "count": 1
+  }
+}

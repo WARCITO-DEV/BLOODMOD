@@ -17,6 +17,14 @@ public class BloodMod {
     public static final DeferredItem<Item> ARMA_SANGRE = ITEMS.registerItem(
             "arma_sangre", SangreItem::new, props -> props.stacksTo(1).fireResistant());
 
+    public static final DeferredItem<Item> ENDERALITE_GUILLOTINE = ITEMS.registerItem(
+            "enderalite_guillotine", EnderaliteGuillotineItem::new,
+            props -> EnderaliteGuillotineItem.configurar(props));
+
+    public static final DeferredItem<Item> VAMPIRIC_CRIMSON = ITEMS.registerItem(
+            "vampiric_crimson", VampiricCrimsonItem::new,
+            props -> VampiricCrimsonItem.configurar(props));
+
     public BloodMod(IEventBus modEventBus) {
         ITEMS.register(modEventBus);
         modEventBus.addListener(BloodMod::addCreative);
@@ -25,6 +33,8 @@ public class BloodMod {
     private static void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.COMBAT) {
             event.accept(ARMA_SANGRE);
+            event.accept(ENDERALITE_GUILLOTINE);
+            event.accept(VAMPIRIC_CRIMSON);
         }
     }
 }
