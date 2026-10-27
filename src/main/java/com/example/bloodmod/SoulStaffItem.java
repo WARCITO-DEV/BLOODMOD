@@ -3,6 +3,7 @@ package com.example.bloodmod;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -42,6 +43,8 @@ public class SoulStaffItem extends Item {
         return p.stacksTo(1).component(DataComponents.LORE, new ItemLore(List.of(
                 Component.literal("Clic derecho: invoca una Soul Skull"),
                 Component.literal("Shift + clic derecho: desaparece todas tus Soul Skull"),
+                Component.literal("Infligen Wither").withStyle(ChatFormatting.YELLOW),
+                Component.literal("Hacen 4 de daño por golpe").withStyle(ChatFormatting.YELLOW),
                 Component.literal("No es una bosa de frijoles pero esta bien, ES DE BUENA MARCA!!!"))));
     }
 
