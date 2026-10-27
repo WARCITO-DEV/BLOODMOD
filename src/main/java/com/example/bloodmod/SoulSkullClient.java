@@ -11,7 +11,7 @@ public class SoulSkullClient {
 
     @SubscribeEvent
     public static void registrarCapas(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.add(SoulSkullModel.LAYER, SoulSkullModel::createBodyLayer);
+        event.registerLayerDefinition(SoulSkullModel.LAYER, SoulSkullModel::createBodyLayer);
     }
 
     @SubscribeEvent
