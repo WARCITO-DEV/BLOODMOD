@@ -29,20 +29,22 @@ import net.minecraft.world.phys.Vec3;
 
 /**
  * SOUL SKULL: mascota voladora aliada (invocada con el Soul Staff).
- *  - 4 corazones, 4 de daño por golpe (+ Wither), 1.5 golpes por segundo
+ *  - 2 corazones, 7 de daño por golpe (+ Wither), 1.5 golpes por segundo
+ *  - Inmune a la caída, al Wither y al fuego
  *  - Vuela igual que un vex y ataca como un vex (embiste al objetivo)
- *  - Sigue a su dueño; si está a más de 10 bloques se teletransporta
- *  - Si el dueño lleva más de 3 s quieto, desciende al suelo a "descansar"
+ *  - Sigue a su dueño; si está a más de 30 bloques se teletransporta
+ *  - Si el dueño lleva más de 7 s quieto, desciende al suelo a "descansar"
  *  - Si el dueño muere, todas sus Soul Skulls mueren
  */
 public class SoulSkullEntity extends PathfinderMob {
 
     // ---- Ajustes ----
-    static final float DANO = 4f;
+    static final float DANO = 7f;
     static final int ENFRIAMIENTO_ATAQUE_TICKS = 13;  // 20 / 13 = ~1.5 golpes por segundo
     static final int WITHER_TICKS = 60;               // 3 s (la ficha no indica duración)
-    static final int QUIETO_TICKS = 60;               // 3 s sin moverse -> descansa
-    static final double DISTANCIA_TELEPORT_SQR = 100.0; // 10 bloques
+    static final int QUIETO_TICKS = 140;              // 7 s sin moverse -> descansa
+    static final double DISTANCIA_TELEPORT_SQR = 900.0; // 30 bloques
+    static final int SONIDO_IDLE_TICKS = 100;           // ghast idle cada 5 s
 
     /** Soul Skulls vivas de cada jugador (para eliminarlas todas con shift + clic derecho). */
     public static final Map<UUID, List<SoulSkullEntity>> POR_DUENO = new HashMap<>();
@@ -66,8 +68,8 @@ public class SoulSkullEntity extends PathfinderMob {
 
     public static AttributeSupplier.Builder crearAtributos() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 8.0)        // 4 corazones
-                .add(Attributes.ATTACK_DAMAGE, 4.0)     // 4 de daño por golpe
+                .add(Attributes.MAX_HEALTH, 4.0)        // 2 corazones
+                .add(Attributes.ATTACK_DAMAGE, 7.0)     // 7 de daño por golpe
                 .add(Attributes.FOLLOW_RANGE, 32.0);
     }
 
@@ -132,6 +134,11 @@ public class SoulSkullEntity extends PathfinderMob {
             return;
         }
 
+        // Inmunidades: caída, Wither y fuego (el fuego/lava se anulan además con fireImmune() en el registro)
+        this.fallDistance = 0;
+        this.removeEffect(MobEffects.WITHER);
+        this.clearFire();
+
         if (this.enfriamientoAtaque > 0) this.enfriamientoAtaque--;
         if (this.ticksAtacando > 0) {
             this.ticksAtacando--;
@@ -192,8 +199,16 @@ public class SoulSkullEntity extends PathfinderMob {
             this.getMoveControl().setWantedPosition(dueno.getX(), dueno.getY() + 1.0, dueno.getZ(), 1.0);
         }
 
-        // Sonido idle: ghast, más grave
-        if (this.random.nextInt(160) == 0) {
+        // Pocas partículas de alma al moverse
+        double mx = this.getX() - this.xo;
+        double my = this.getY() - this.yo;
+        double mz = this.getZ() - this.zo;
+        if (this.tickCount % 6 == 0 && mx * mx + my * my + mz * mz > 0.0004) {
+            sl.sendParticles(ParticleTypes.SOUL, this.getX(), this.getY(0.5), this.getZ(), 1, 0.1, 0.1, 0.1, 0.0);
+        }
+
+        // Sonido idle: ghast, más grave, cada 5 segundos
+        if (this.tickCount % SONIDO_IDLE_TICKS == 0) {
             sl.playSound(null, this.blockPosition(), sonido(SoundEvents.GHAST_AMBIENT),
                     SoundSource.NEUTRAL, 1.0f, 0.5f);
         }

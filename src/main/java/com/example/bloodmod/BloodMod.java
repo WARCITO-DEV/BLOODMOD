@@ -37,7 +37,7 @@ public class BloodMod {
 
     public static final DeferredHolder<EntityType<?>, EntityType<SoulSkullEntity>> SOUL_SKULL =
             ENTITIES.registerEntityType("soul_skull", SoulSkullEntity::new, MobCategory.MISC,
-                    builder -> builder.sized(0.5f, 0.5f).clientTrackingRange(10));
+                    builder -> builder.sized(0.5f, 0.5f).clientTrackingRange(10).fireImmune());
 
     public BloodMod(IEventBus modEventBus) {
         ITEMS.register(modEventBus);

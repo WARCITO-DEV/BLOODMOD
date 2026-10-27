@@ -15,22 +15,26 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.level.Level;
 
 /**
  * SOUL STAFF (bastón)
- *  - Clic derecho: invoca una Soul Skull (enfriamiento 3 s)
+ *  - Clic derecho: invoca una Soul Skull (enfriamiento 8 s, máximo 6)
  *  - Shift + clic derecho: elimina todas las Soul Skull que invocaste
  *  - Mientras tengas Soul Skulls activas, el bastón cambia a la textura de hueso con calavera de wither
  */
 public class SoulStaffItem extends Item {
 
-    static final int ENFRIAMIENTO_TICKS = 60; // 3 s
-    static final int MAX_SOUL_SKULLS = 10;    // tope por jugador (la ficha no lo indicaba)
+    static final int ENFRIAMIENTO_TICKS = 160; // 8 s
+    static final int MAX_SOUL_SKULLS = 6;     // máximo de invocaciones por jugador
 
     private static final Identifier MODELO_NORMAL = Identifier.fromNamespaceAndPath("bloodmod", "soul_staff");
     private static final Identifier MODELO_ACTIVO = Identifier.fromNamespaceAndPath("bloodmod", "soul_staff_active");
@@ -40,12 +44,24 @@ public class SoulStaffItem extends Item {
     }
 
     public static Item.Properties configurar(Item.Properties p) {
-        return p.stacksTo(1).component(DataComponents.LORE, new ItemLore(List.of(
-                Component.literal("Clic derecho: invoca una Soul Skull"),
-                Component.literal("Shift + clic derecho: desaparece todas tus Soul Skull"),
-                Component.literal("Infligen Wither").withStyle(ChatFormatting.YELLOW),
-                Component.literal("Hacen 4 de daño por golpe").withStyle(ChatFormatting.YELLOW),
-                Component.literal("No es una bosa de frijoles pero esta bien, ES DE BUENA MARCA!!!"))));
+        // El bastón en sí: 2 de daño y velocidad de ataque 0.05
+        ItemAttributeModifiers attrs = ItemAttributeModifiers.builder()
+                .add(Attributes.ATTACK_DAMAGE,
+                        new AttributeModifier(BASE_ATTACK_DAMAGE_ID, 1.0, AttributeModifier.Operation.ADD_VALUE),
+                        EquipmentSlotGroup.MAINHAND)
+                .add(Attributes.ATTACK_SPEED,
+                        new AttributeModifier(BASE_ATTACK_SPEED_ID, 0.05 - 4.0, AttributeModifier.Operation.ADD_VALUE),
+                        EquipmentSlotGroup.MAINHAND)
+                .build();
+        return p.stacksTo(1)
+                .component(DataComponents.ATTRIBUTE_MODIFIERS, attrs)
+                .component(DataComponents.LORE, new ItemLore(List.of(
+                        Component.literal("Clic derecho: invoca una Soul Skull"),
+                        Component.literal("Shift + clic derecho: desaparece todas tus Soul Skull"),
+                        Component.literal("Infligen Wither").withStyle(ChatFormatting.YELLOW),
+                        Component.literal("Hacen 7 de daño por golpe").withStyle(ChatFormatting.YELLOW),
+                        Component.literal("No es una bosa de frijoles pero esta bien, ES DE BUENA MARCA!!!")
+                                .withStyle(ChatFormatting.GREEN))));
     }
 
     @Override
