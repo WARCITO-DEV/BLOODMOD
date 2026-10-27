@@ -1,5 +1,7 @@
 {
   "item.bloodmod.arma_sangre": "Arma de Sangre",
   "item.bloodmod.enderalite_guillotine": "ENDERALITE GUILLOTINE",
-  "item.bloodmod.vampiric_crimson": "VAMPIRIC CRIMSON"
+  "item.bloodmod.vampiric_crimson": "VAMPIRIC CRIMSON",
+  "item.bloodmod.soul_staff": "Soul Staff",
+  "entity.bloodmod.soul_skull": "Soul Skull"
 }

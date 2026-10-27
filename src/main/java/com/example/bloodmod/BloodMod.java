@@ -1,10 +1,13 @@
 package com.example.bloodmod;
 
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -13,7 +16,9 @@ public class BloodMod {
     public static final String MODID = "bloodmod";
 
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
+    public static final DeferredRegister.Entities ENTITIES = DeferredRegister.createEntities(MODID);
 
+    // ---- Armas ----
     public static final DeferredItem<Item> ARMA_SANGRE = ITEMS.registerItem(
             "arma_sangre", SangreItem::new, props -> props.stacksTo(1).fireResistant());
 
@@ -25,8 +30,18 @@ public class BloodMod {
             "vampiric_crimson", VampiricCrimsonItem::new,
             props -> VampiricCrimsonItem.configurar(props));
 
+    // ---- Soul Staff + Soul Skull ----
+    public static final DeferredItem<Item> SOUL_STAFF = ITEMS.registerItem(
+            "soul_staff", SoulStaffItem::new,
+            props -> SoulStaffItem.configurar(props));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<SoulSkullEntity>> SOUL_SKULL =
+            ENTITIES.registerEntityType("soul_skull", SoulSkullEntity::new, MobCategory.MISC,
+                    builder -> builder.sized(0.5f, 0.5f).clientTrackingRange(10));
+
     public BloodMod(IEventBus modEventBus) {
         ITEMS.register(modEventBus);
+        ENTITIES.register(modEventBus);
         modEventBus.addListener(BloodMod::addCreative);
     }
 
@@ -35,6 +50,7 @@ public class BloodMod {
             event.accept(ARMA_SANGRE);
             event.accept(ENDERALITE_GUILLOTINE);
             event.accept(VAMPIRIC_CRIMSON);
+            event.accept(SOUL_STAFF);
         }
     }
 }
