@@ -39,6 +39,15 @@ public class BloodMod {
             ENTITIES.registerEntityType("soul_skull", SoulSkullEntity::new, MobCategory.MISC,
                     builder -> builder.sized(0.5f, 0.5f).clientTrackingRange(10).fireImmune());
 
+    // ---- Chester ----
+    public static final DeferredItem<Item> CHESTER_KEY = ITEMS.registerItem(
+            "chester_key", ChesterKeyItem::new,
+            props -> ChesterKeyItem.configurar(props));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<ChesterEntity>> CHESTER =
+            ENTITIES.registerEntityType("chester", ChesterEntity::new, MobCategory.MISC,
+                    builder -> builder.sized(0.75f, 0.85f).clientTrackingRange(10));
+
     public BloodMod(IEventBus modEventBus) {
         ITEMS.register(modEventBus);
         ENTITIES.register(modEventBus);
@@ -51,6 +60,7 @@ public class BloodMod {
             event.accept(ENDERALITE_GUILLOTINE);
             event.accept(VAMPIRIC_CRIMSON);
             event.accept(SOUL_STAFF);
+            event.accept(CHESTER_KEY);
         }
     }
 }

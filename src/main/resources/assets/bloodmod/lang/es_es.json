@@ -3,5 +3,7 @@
   "item.bloodmod.enderalite_guillotine": "ENDERALITE GUILLOTINE",
   "item.bloodmod.vampiric_crimson": "VAMPIRIC CRIMSON",
   "item.bloodmod.soul_staff": "Soul Staff",
-  "entity.bloodmod.soul_skull": "Soul Skull"
+  "entity.bloodmod.soul_skull": "Soul Skull",
+  "item.bloodmod.chester_key": "Llave de Chester",
+  "entity.bloodmod.chester": "Chester"
 }

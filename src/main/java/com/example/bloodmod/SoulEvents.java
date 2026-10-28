@@ -10,5 +10,6 @@ public class SoulEvents {
     @SubscribeEvent
     public static void atributos(EntityAttributeCreationEvent event) {
         event.put(BloodMod.SOUL_SKULL.get(), SoulSkullEntity.crearAtributos().build());
+        event.put(BloodMod.CHESTER.get(), ChesterEntity.crearAtributos().build());
     }
 }
