@@ -31,10 +31,10 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * Arma de hemomancia con 3 modos. Shift + clic derecho para cambiar:
+ * Arma de hemomancia con 3 modos. Shift + CLICK derecho para cambiar:
  *   0 = Katana  (larga, RÁPIDA, recupera 1/2 corazón por golpe)
  *   1 = Guadaña (daño en área; al matar suelta garras que atraen a los hostiles)
- *   2 = Arco    (mantén clic derecho para cargar: drena vida, más carga =
+ *   2 = Arco    (mantén CLICK derecho para cargar: drena vida, más carga =
  *                más flechas + más daño en área)
  */
 public class SangreItem extends Item {
@@ -123,7 +123,7 @@ public class SangreItem extends Item {
         }
     }
 
-    // ---------- Clic derecho: cambiar de modo / empezar a cargar el arco ----------
+    // ---------- CLICK derecho: cambiar de modo / empezar a cargar el arco ----------
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {

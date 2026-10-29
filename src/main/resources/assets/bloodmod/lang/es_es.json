@@ -4,6 +4,7 @@
   "item.bloodmod.vampiric_crimson": "VAMPIRIC CRIMSON",
   "item.bloodmod.soul_staff": "Soul Staff",
   "entity.bloodmod.soul_skull": "Soul Skull",
-  "item.bloodmod.chester_key": "Llave de Chester",
-  "entity.bloodmod.chester": "Chester"
+  "item.bloodmod.chester_key": "Llave Dorada de Chester",
+  "entity.bloodmod.chester": "Chester",
+  "itemGroup.bloodmod": "Blood Mod"
 }

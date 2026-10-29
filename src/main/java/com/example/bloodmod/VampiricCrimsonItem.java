@@ -29,8 +29,8 @@ import net.minecraft.world.phys.Vec3;
 /**
  * VAMPIRIC CRIMSON (espada)
  *  - Daño 10, enfriamiento de ataque 0.5 s, durabilidad nivel diamante (1561)
- *  - Al atacar (clic izquierdo): cura 1/2 corazón
- *  - Clic derecho: dispara una púa teledirigida; si impacta, te cura 2 corazones
+ *  - Al atacar (CLICK izquierdo): cura 1/2 corazón
+ *  - CLICK derecho: dispara una púa teledirigida; si impacta, te cura 2 corazones
  */
 public class VampiricCrimsonItem extends Item {
 

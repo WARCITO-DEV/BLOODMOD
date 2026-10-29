@@ -46,7 +46,7 @@ public class SoulSkullEntity extends PathfinderMob {
     static final double DISTANCIA_TELEPORT_SQR = 900.0; // 30 bloques
     static final int SONIDO_IDLE_TICKS = 100;           // ghast idle cada 5 s
 
-    /** Soul Skulls vivas de cada jugador (para eliminarlas todas con shift + clic derecho). */
+    /** Soul Skulls vivas de cada jugador (para eliminarlas todas con shift + CLICK derecho). */
     public static final Map<UUID, List<SoulSkullEntity>> POR_DUENO = new HashMap<>();
 
     // Estados de animación (el cliente los actualiza en tick())

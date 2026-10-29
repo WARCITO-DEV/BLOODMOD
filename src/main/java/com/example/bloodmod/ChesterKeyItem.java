@@ -3,11 +3,12 @@ package com.example.bloodmod;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.ChatFormatting;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -26,26 +27,29 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * LLAVE DE CHESTER
- *  - Clic derecho: invoca a Chester; la llave se consume.
+ * LLAVE DORADA DE CHESTER
+ *  - CLICK derecho: invoca a Chester; la llave se consume. Es a prueba de fuego y lava.
  *  - Cuando Chester muere suelta una llave nueva con todo lo que guardaba. Esa llave se recarga
- *    durante 5 minutos (el tiempo restante aparece en la descripción) y hasta entonces no sirve.
- *  - Se encuentra en cofres de Mineshafts y de templos del desierto.
+ *    durante 2 minutos (el contador aparece en la descripción) y hasta entonces no sirve.
+ *  - Se encuentra en cofres de varias estructuras (ver data/bloodmod/loot_modifiers).
  */
 public class ChesterKeyItem extends Item {
 
-    public static final long RECARGA_TICKS = 5L * 60L * 20L; // 5 minutos
+    public static final long RECARGA_TICKS = 2L * 60L * 20L; // 2 minutos
     static final String TAG_LISTA_EN = "listaEn";             // tick del mundo en que vuelve a estar lista (0 = lista)
+
+    private static final Style DORADO = Style.EMPTY.withColor(0xFFD700);
+    private static final Style NARANJA = Style.EMPTY.withColor(0xFF6A00);
 
     public ChesterKeyItem(Properties props) {
         super(props);
     }
 
     public static Item.Properties configurar(Item.Properties p) {
-        return p.stacksTo(1).component(DataComponents.LORE, new ItemLore(lineas(true, 0)));
+        return p.stacksTo(1).fireResistant().component(DataComponents.LORE, new ItemLore(lineas(true, 0)));
     }
 
-    /** Descripción: contador de usos/recarga + instrucciones en verde + frase en amarillo. */
+    /** Descripción: contador de usos/recarga + instrucciones en dorado + aviso en naranja. */
     static List<Component> lineas(boolean lista, long restanteTicks) {
         List<Component> l = new ArrayList<>();
         if (lista) {
@@ -55,12 +59,12 @@ public class ChesterKeyItem extends Item {
             l.add(Component.literal(String.format("Recargando: %d:%02d", seg / 60, seg % 60))
                     .withStyle(ChatFormatting.RED));
         }
-        l.add(Component.literal("Clic derecho: invoca a Chester (la llave se consume)").withStyle(ChatFormatting.GREEN));
-        l.add(Component.literal("Clic derecho sobre Chester: abre su inventario").withStyle(ChatFormatting.GREEN));
-        l.add(Component.literal("Shift + clic derecho sobre Chester: lo sienta o lo levanta").withStyle(ChatFormatting.GREEN));
-        l.add(Component.literal("Solo se le puede herir con un hacha").withStyle(ChatFormatting.GREEN));
-        l.add(Component.literal("Si muere, suelta la llave con todo lo que guardó").withStyle(ChatFormatting.GREEN));
-        l.add(Component.literal("La llave se recarga en 5 minutos").withStyle(ChatFormatting.GREEN));
+        l.add(Component.literal("CLICK derecho invoca a Chester (la llave se consume)").withStyle(DORADO));
+        l.add(Component.literal("CLICK derecho abre el inventario de chester").withStyle(DORADO));
+        l.add(Component.literal("Shift + CLICK derecho Sienta a chester").withStyle(DORADO));
+        l.add(Component.literal("Shift + CLICK derecho con una cubeta lo guarda de nuevo en la llave").withStyle(DORADO));
+        l.add(Component.literal("Un jugador puede dañarlo con un hacha (de cualquier tipo)").withStyle(DORADO));
+        l.add(Component.literal("No incluye gafas de sol").withStyle(NARANJA));
         l.add(Component.literal("Un amigo de otro mundo, quisa por eso se me hace familiar!!!!")
                 .withStyle(ChatFormatting.YELLOW));
         return l;
@@ -93,6 +97,13 @@ public class ChesterKeyItem extends Item {
         long lista = sl.getGameTime() + RECARGA_TICKS;
         CustomData.update(DataComponents.CUSTOM_DATA, llave, tag -> tag.putLong(TAG_LISTA_EN, lista));
         llave.set(DataComponents.LORE, new ItemLore(lineas(false, RECARGA_TICKS)));
+        return llave;
+    }
+
+    /** Llave lista para usar (al recoger a Chester con una cubeta): con su contenido y sin tiempo de espera. */
+    public static ItemStack crearLlaveLista(SimpleContainer inventario) {
+        ItemStack llave = new ItemStack(BloodMod.CHESTER_KEY.get());
+        guardarContenido(llave, inventario);
         return llave;
     }
 

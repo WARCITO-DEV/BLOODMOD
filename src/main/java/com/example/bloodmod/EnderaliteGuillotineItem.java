@@ -29,7 +29,7 @@ import net.minecraft.world.phys.Vec3;
  * ENDERALITE GUILLOTINE (hacha)
  *  - Daño 12, enfriamiento de ataque 1 s, durabilidad nivel diamante (1561)
  *  - Al atacar: Wither I durante 2 s
- *  - Clic derecho: atrae en cono (6 bloques) a toda entidad viva y la aturde 2 s
+ *  - CLICK derecho: atrae en cono (6 bloques) a toda entidad viva y la aturde 2 s
  */
 public class EnderaliteGuillotineItem extends Item {
 

@@ -27,8 +27,8 @@ import net.minecraft.world.level.Level;
 
 /**
  * SOUL STAFF (bastón)
- *  - Clic derecho: invoca una Soul Skull (enfriamiento 8 s, máximo 6)
- *  - Shift + clic derecho: elimina todas las Soul Skull que invocaste
+ *  - CLICK derecho: invoca una Soul Skull (enfriamiento 8 s, máximo 6)
+ *  - Shift + CLICK derecho: elimina todas las Soul Skull que invocaste
  *  - Mientras tengas Soul Skulls activas, el bastón cambia a la textura de hueso con calavera de wither
  */
 public class SoulStaffItem extends Item {
@@ -56,8 +56,8 @@ public class SoulStaffItem extends Item {
         return p.stacksTo(1)
                 .component(DataComponents.ATTRIBUTE_MODIFIERS, attrs)
                 .component(DataComponents.LORE, new ItemLore(List.of(
-                        Component.literal("Clic derecho: invoca una Soul Skull"),
-                        Component.literal("Shift + clic derecho: desaparece todas tus Soul Skull"),
+                        Component.literal("CLICK derecho: invoca una Soul Skull"),
+                        Component.literal("Shift + CLICK derecho: desaparece todas tus Soul Skull"),
                         Component.literal("Infligen Wither").withStyle(ChatFormatting.YELLOW),
                         Component.literal("Hacen 7 de daño por golpe").withStyle(ChatFormatting.YELLOW),
                         Component.literal("No es una bosa de frijoles pero esta bien, ES DE BUENA MARCA!!!")
